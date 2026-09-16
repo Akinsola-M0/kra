@@ -28,7 +28,6 @@ from database import (
     update_session,
     update_student,
 )
-from mail_service import send_mail
 
 
 ctk.set_appearance_mode("dark")
@@ -331,34 +330,6 @@ def launch_gui():
         reset_student_form()
         messagebox.showinfo("Success", "Student deleted.")
 
-    def send_test_email_to_student():
-        name = student_name.get().strip() or "Student"
-        email = student_email.get().strip()
-
-        if not email:
-            messagebox.showerror("Missing Email", "Enter or select a student email first.")
-            return
-
-        if not is_valid_email(email):
-            messagebox.showerror("Invalid Input", "Enter a valid email address.")
-            return
-
-        if send_mail(
-            email,
-            "Teaching Tracker Test Email",
-            (
-                f"Hello {name},\n\n"
-                "This is a test email from Teaching Revenue Tracker.\n"
-                "If you received this message, email delivery is working."
-            )
-        ):
-            messagebox.showinfo("Success", f"Test email sent to {email}.")
-        else:
-            messagebox.showerror(
-                "Email Failed",
-                "Test email could not be sent. Check your EMAIL and APP_PASSWORD settings."
-            )
-
     student_actions = ctk.CTkFrame(students_frame)
     student_actions.pack(pady=10)
 
@@ -377,13 +348,6 @@ def launch_gui():
     )
     new_student_button.grid(row=0, column=1, padx=8)
 
-    test_email_button = ctk.CTkButton(
-        student_actions,
-        text="Send Test Email",
-        command=send_test_email_to_student
-    )
-    test_email_button.grid(row=0, column=2, padx=8)
-
     delete_student_button = ctk.CTkButton(
         student_actions,
         text="Delete Student",
@@ -391,7 +355,7 @@ def launch_gui():
         fg_color="#B33636",
         hover_color="#922B2B"
     )
-    delete_student_button.grid(row=0, column=3, padx=8)
+    delete_student_button.grid(row=0, column=2, padx=8)
 
     students_table_frame = ctk.CTkFrame(students_frame)
     students_table_frame.pack(fill="both", expand=True, padx=20, pady=(10, 20))

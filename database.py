@@ -32,8 +32,6 @@ def run_migrations(cursor):
 
     ensure_column(cursor, "class_sessions", "status", "TEXT DEFAULT 'scheduled'")
     ensure_column(cursor, "class_sessions", "earnings", "REAL DEFAULT 0")
-    ensure_column(cursor, "class_sessions", "day_reminder_sent", "INTEGER DEFAULT 0")
-    ensure_column(cursor, "class_sessions", "minute_reminder_sent", "INTEGER DEFAULT 0")
     ensure_column(cursor, "class_sessions", "payment_status", "TEXT DEFAULT 'unpaid'")
     ensure_column(cursor, "class_sessions", "payment_date", "TEXT")
     ensure_column(cursor, "class_sessions", "created_at", "TEXT")
@@ -98,8 +96,6 @@ def init_db():
                 duration_hours REAL NOT NULL,
                 status TEXT DEFAULT 'scheduled',
                 earnings REAL DEFAULT 0,
-                day_reminder_sent INTEGER DEFAULT 0,
-                minute_reminder_sent INTEGER DEFAULT 0,
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (class_id) REFERENCES classes(id),
                 FOREIGN KEY (student_id) REFERENCES students(id)
@@ -317,9 +313,7 @@ def update_session(
                 status = ?,
                 earnings = ?,
                 payment_status = ?,
-                payment_date = ?,
-                day_reminder_sent = 0,
-                minute_reminder_sent = 0
+                payment_date = ?
             WHERE id = ?
         """, (
             class_id,
